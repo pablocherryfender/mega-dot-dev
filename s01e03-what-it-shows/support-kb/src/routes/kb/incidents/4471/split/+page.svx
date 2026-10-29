@@ -1,0 +1,80 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: support desk
+status: proposed
+reviewed: 2026-10-29
+signature: v1.eyJzdWIiOiIzODA5IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyODAzNzMsImV4cCI6MTc5MzM2Njc3M30.6sR16c777_WgEHerEd6UWI0UX4nJJpRfprJIdZ81OOo
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+[#4471](/kb/incidents/4471) was merged on subject lines ([decision 0001](/kb/decisions/0001-dedupe-by-subject)),
+so every report about a wrong date went into it. Read by tenant, booking form and what people
+actually describe, the reports hold three different problems. One fix will not close them all,
+so each one now has its own ticket.
+
+<Callout kind="warn">
+#4471 is not one known issue. Fixing the parser leaves the other two open.
+</Callout>
+
+## The split
+
+<ProblemTable
+  ticket={4471}
+  issues={{
+    parser: 'https://github.com/pablocherryfender/mega-dot-dev/issues/1',
+    hint: 'https://github.com/pablocherryfender/mega-dot-dev/issues/2',
+    'one-day': 'https://github.com/pablocherryfender/mega-dot-dev/issues/3',
+  }}
+/>
+
+## The problems
+
+### `parser`: day-first dates read month first
+
+The shared parser reads every date month first. Every tenant on file writes the day first, so a
+booking for 7 April goes out as 4 July, and 12 October as 10 December. This is the bug #4471
+describes, and it hits every tenant through the app, email and the booking-v2 form.
+
+Fix: parse dates in the tenant's locale (`dayFirst()` in `causes.ts` already asks the platform).
+
+### `hint`: booking-v3 tells people to type month first
+
+The booking-v3 form prints `MM/DD/YYYY` under its date field, then reads the date the tenant's way,
+day first. People type what the hint says, and the date comes out flipped. Only tenants on
+booking-v3 have it, and only through the form. The month/day swap looks the same as `parser`, but
+the parser fix does not touch this form.
+
+Fix: print the tenant's own order under the field, as booking-v2 does (`DD/MM/YYYY`).
+
+### `one-day`: dates move by one day, no swap
+
+These reports describe a date that moved by one day: Tuesday 12 May shown as Monday 11 May,
+"every booking in June is one day off", a client in Lisbon who got Tuesday while a client in
+Toronto got Monday, an invite that arrived before the booking was made. A month/day swap cannot
+produce any of these. The desk had already noted them (`desk-notes.json`); the #4471 page counted
+them under `parser` as a footnote.
+
+Likely cause, not yet confirmed: a date converted through UTC or the viewer's time zone, so it lands
+on the day before. Engineering should check how invite dates are stored and rendered.
+
+## How these were counted
+
+- **By id.** The ticket system exports in pages that overlap, so some reports come twice. Each
+  report is counted once.
+- **By tenant and form, not by intake tag.** Intake tags a report from the reporter's browser,
+  and that guess often disagrees with the tenant (see `causes.ts`). The tag is ignored here.
+- **By what people describe.** A month/day swap and a one-day move are different symptoms, so they
+  are different problems, even when the subject line is the same.
+
+## Lessons
+
+- A subject line tells you what people noticed, not what broke. Merge on cause, not subject.
+- Check a big ticket's reports against the tenant directory before marking it known.
+
+<RenderStamp {signature} />

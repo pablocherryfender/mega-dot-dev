@@ -1,8 +1,17 @@
 # S01E03 · what it shows
 
 The support desk merged 412 reports about dates into one ticket, #4471, and marked it known.
+Read by tenant, booking form and what people describe, it holds three problems:
 
-This folder holds the work on it:
+| Problem | Reports | Ticket |
+|---|---|---|
+| `parser`: day-first dates read month first | 374 | [#1](https://github.com/pablocherryfender/mega-dot-dev/issues/1) |
+| `hint`: booking-v3 form hint says `MM/DD/YYYY` | 33 | [#2](https://github.com/pablocherryfender/mega-dot-dev/issues/2) |
+| `one-day`: dates move by one day, no swap | 5 | [#3](https://github.com/pablocherryfender/mega-dot-dev/issues/3) |
 
-- one GitHub issue per problem found in #4471, each with how many reports it covers (see the repo's Issues tab)
-- a page about those problems for the desk's knowledge base (`.svx`)
+## Files
+
+- `support-kb/`: the desk's kb export, with my page added
+  - page: [`src/routes/kb/incidents/4471/split/+page.svx`](support-kb/src/routes/kb/incidents/4471/split/+page.svx)
+  - its logic: [`src/lib/kb/problems.ts`](support-kb/src/lib/kb/problems.ts), [`src/lib/kb/ProblemTable.svelte`](support-kb/src/lib/kb/ProblemTable.svelte)
+- [`rendered/kb-incidents-4471-split.html`](rendered/kb-incidents-4471-split.html): the page as the desk sees it (SvelteKit + mdsvex, prerendered)
