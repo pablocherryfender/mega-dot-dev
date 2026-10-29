@@ -11,7 +11,6 @@ Read by tenant, booking form and what people describe, it holds three problems:
 
 ## Files
 
-- `support-kb/`: the desk's kb export, with my page added
-  - page: [`src/routes/kb/incidents/4471/split/+page.svx`](support-kb/src/routes/kb/incidents/4471/split/+page.svx)
-  - its logic: [`src/lib/kb/problems.ts`](support-kb/src/lib/kb/problems.ts), [`src/lib/kb/ProblemTable.svelte`](support-kb/src/lib/kb/ProblemTable.svelte)
+- `support-kb/`: the desk's kb export as it came, with one page added:
+  [`src/routes/kb/incidents/4471/split/+page.svx`](support-kb/src/routes/kb/incidents/4471/split/+page.svx). It uses only the desk's own components.
 - [`rendered/kb-incidents-4471-split.html`](rendered/kb-incidents-4471-split.html): the page as the desk sees it (SvelteKit + mdsvex, prerendered)
