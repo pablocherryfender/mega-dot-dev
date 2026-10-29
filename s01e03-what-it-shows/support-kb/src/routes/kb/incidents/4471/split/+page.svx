@@ -1,6 +1,6 @@
 ---
 layout: runbook
-title: '#4471 · three problems, not one'
+title: '#4471 · two problems, not one'
 owner: support desk
 status: proposed
 reviewed: 2026-10-29
@@ -15,17 +15,16 @@ signature: v1.eyJzdWIiOiIzODA5IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYX
 </script>
 
 [#4471](/kb/incidents/4471) was merged on subject lines ([decision 0001](/kb/decisions/0001-dedupe-by-subject)),
-so every report about a wrong date went into it. Read by tenant, booking form and what people
-describe, it holds three problems. One fix will not close them all, so each has its own ticket:
+so every report about a wrong date went into it. Read by tenant and booking form, it holds two
+problems with two different fixes. Each has its own ticket now:
 
 | problem | what breaks | ticket |
 |---|---|---|
 | `parser` | day-first dates are read month first | [#1](https://github.com/pablocherryfender/mega-dot-dev/issues/1) |
 | `hint` | the booking-v3 form tells people to type the month first | [#2](https://github.com/pablocherryfender/mega-dot-dev/issues/2) |
-| one-day move | a date moves by one day, with no month/day swap | [#3](https://github.com/pablocherryfender/mega-dot-dev/issues/3) |
 
 <Callout kind="warn">
-#4471 is not one known issue. Fixing the parser leaves the other two open.
+#4471 is not one known issue. The parser fix leaves the booking-v3 form broken.
 </Callout>
 
 ## What the desk's view shows
@@ -33,9 +32,9 @@ describe, it holds three problems. One fix will not close them all, so each has 
 <CauseTable ticket={4471} />
 
 The table counts each report once, by id, and places it by tenant and booking form, not by the
-intake tag. `hint` is its own problem now, with its own ticket. The reports in the note under
-`parser` are the one-day moves: they are filed under `parser` by tenant, but a month/day swap
-does not explain them, so they are tracked apart. The `parser` ticket counts its row without them.
+intake tag: intake guesses from the reporter's browser, and the guess often disagrees with the
+tenant. `hint` is not part of #4471's fix, so it has its own ticket. The reports in the note under
+`parser` stay with `parser`, where the desk files them by tenant.
 
 ## The problems
 
@@ -55,16 +54,6 @@ tenants on booking-v3 have it, and only through the form, so the parser fix does
 
 Fix: print the tenant's own order under the field, as booking-v2 does.
 
-### One-day move: dates move by one day, no swap
-
-These reports describe a date that moved by one day: an invite that says Tuesday while the
-calendar says Monday, every booking in one month one day off, a client in Lisbon who got Tuesday
-while a client in Toronto got Monday, an invite that arrived before the booking was made. The desk
-had already listed them in `desk-notes.json`.
-
-Likely cause, not yet confirmed: a date converted through UTC or the viewer's time zone, so it
-lands on the day before. Engineering should check how invite dates are stored and rendered.
-
 ## Since April
 
 <QueueTimeline ticket={4471} />
@@ -72,6 +61,6 @@ lands on the day before. Engineering should check how invite dates are stored an
 ## Lessons
 
 - A subject line tells you what people noticed, not what broke. Merge on cause, not subject.
-- Read the footnotes under a count: they can hold a problem of their own.
+- Count with the tenant directory, not the intake tag, and count each report id once.
 
 <RenderStamp {signature} />

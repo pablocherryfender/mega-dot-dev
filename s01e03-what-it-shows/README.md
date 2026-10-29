@@ -1,13 +1,12 @@
 # S01E03 · what it shows
 
 The support desk merged 412 reports about dates into one ticket, #4471, and marked it known.
-Read by tenant, booking form and what people describe, it holds three problems:
+Read by tenant and booking form, as the desk's own view counts them, it holds two problems:
 
 | Problem | Reports | Ticket |
 |---|---|---|
-| `parser`: day-first dates read month first | 374 | [#1](https://github.com/pablocherryfender/mega-dot-dev/issues/1) |
-| `hint`: booking-v3 form hint says `MM/DD/YYYY` | 33 | [#2](https://github.com/pablocherryfender/mega-dot-dev/issues/2) |
-| `one-day`: dates move by one day, no swap | 5 | [#3](https://github.com/pablocherryfender/mega-dot-dev/issues/3) |
+| `parser`: day-first dates read month first | 379 | [#1](https://github.com/pablocherryfender/mega-dot-dev/issues/1) |
+| `hint`: booking-v3 form hint asks for the month first | 33 | [#2](https://github.com/pablocherryfender/mega-dot-dev/issues/2) |
 
 ## Files
 
